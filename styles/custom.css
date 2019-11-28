@@ -1,0 +1,61 @@
+/*BROWN #913C38;
+GYELLOW #FED300;*/
+
+body {
+  padding-top: 70px;
+}
+
+.btn{
+	margin-bottom:5px;
+	}
+	
+.navbar-brand,.navbar-brand:visited{
+	color:#913C38 !important;
+}
+
+.calendar{
+	background:#f0f0f0;
+	float:left;
+	width:100%;
+	height:auto;
+	margin-bottom:0px;
+	border-radius:3px;
+	/*box-shadow: 0 8px 6px -6px #ddd;*/
+	color:#000;/*#9E453F;*/
+	border-left:0px solid #fafafa;
+	}
+.calendar tr th{
+	background:none;
+	text-align:center;
+	padding-left:2px;
+	padding-right:2px;
+	padding-top:4px;
+	padding-bottom:4px;
+	color:#9E453F;
+	}
+.calendar tr td{
+	background:none;
+	text-align:center;
+	padding-left:2px;
+	padding-right:2px;
+	padding-top:4px;
+	padding-bottom:4px;
+	}
+.calendar tr #curr{
+	background:#FED300;
+	cursor:pointer;
+	}
+	
+.search-res{
+	background:rgba(255,255,255,0.9);
+	position:absolute;
+	z-index:10;
+	margin-top:-10px;
+	right:0;
+	left:0;
+	/*border-left:15px solid #fff;
+	border-right:15px solid #fff;*/
+	padding-bottom:20px;
+	/*box-shadow: 0 10px 6px -6px #ccc;*/
+	display:none;
+	}

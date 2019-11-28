@@ -1,0 +1,11 @@
+RewriteEngine On
+
+#Remove .php extension
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteRule ^([^.]+)$ $1.php [NC,L]
+
+ErrorDocument 400 http://flexi.local/err/?code=400
+ErrorDocument 401 http://flexi.local/err/?code=401
+ErrorDocument 403 http://flexi.local/err/?code=403
+ErrorDocument 500 http://flexi.local/err/?code=500
+ErrorDocument 404 http://flexi.local/err/?code=404
