@@ -1,6 +1,9 @@
 # flexi-library-management-system
 A PHP Library Management System
 
+![alt text](./screenshot.png)
+
+
 ***Warning!** This project was last updated way back in 2015. Don't frown if it dissapoints you :)*
 
 ---
@@ -15,6 +18,4 @@ A PHP Library Management System
     `8AA9-EA1A-43C9-4613`
 
 5. Use **martinnzuki** as username and **flexi_lms_15** as your password to login.
-
-![alt text](./screenshot.png)
 
