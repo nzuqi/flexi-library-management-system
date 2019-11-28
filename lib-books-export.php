@@ -5,9 +5,6 @@
 	if ($_SERVER["REQUEST_METHOD"]=="POST"){
 		$dtype="";
 		$dtype=$_POST["dtype"];
-		
-		dbconnect();
-		
 		// Create new PHPExcel object
 		$objPHPExcel = new PHPExcel();
 		// Set properties
@@ -24,7 +21,7 @@
 					->setCellValue('A2', 'LIBRARY BOOKS RECORDS - '.strtoupper($dtype).' LIST');
 		
 		if($dtype=='all'){
-			$sql = mysql_query("SELECT * FROM books ORDER BY bAccNo ASC");
+			$sql = mysqli_query($mysqli,"SELECT * FROM books ORDER BY bAccNo ASC");
 			$n = 1;
 			$BStyle = array(
 					  'borders' => array(
@@ -45,7 +42,7 @@
 						->setCellValue('H4', 'POPUB')
 						->setCellValue('I4', 'YOPUB');
 				$no=5;
-			while($data = mysql_fetch_assoc($sql)){
+			while($data = mysqli_fetch_assoc($sql)){
 				$objPHPExcel->setActiveSheetIndex(0)
 					->setCellValue('A'.$no, " ".$data['bAccNo'])
 					->setCellValue('B'.$no, $data['bTitle'])
@@ -93,20 +90,20 @@
 				$no=5;
 			
 			$squer="SELECT * FROM issue WHERE iState=0;";
-			$resl=mysql_query($squer);
-			while ($r=mysql_fetch_array($resl)){
+			$resl=mysqli_query($mysqli,$squer);
+			while ($r=mysqli_fetch_array($resl)){
 				$q2="SELECT * FROM books WHERE BID=".$r['BID']." LIMIT 1;";
-				$res2=mysql_query($q2);
-				while ($rw2=mysql_fetch_array($res2)){
+				$res2=mysqli_query($mysqli,$q2);
+				while ($rw2=mysqli_fetch_array($res2)){
 					
 				}
 				
-				$sql = mysql_query("SELECT * FROM books WHERE BID=".$r['BID']." LIMIT 1");
-				while($data = mysql_fetch_assoc($sql)){
+				$sql = mysqli_query($mysqli,"SELECT * FROM books WHERE BID=".$r['BID']." LIMIT 1");
+				while($data = mysqli_fetch_assoc($sql)){
 					$luname=$lunumb='';
 					$q3="SELECT * FROM libcusts WHERE LID=".$r['SID']." LIMIT 1;";
-					$res3=mysql_query($q3);
-					while ($rw3=mysql_fetch_array($res3)){
+					$res3=mysqli_query($mysqli,$q3);
+					while ($rw3=mysqli_fetch_array($res3)){
 						$luname=ucwords(strtolower($rw3["LName"]));
 						$lunumb=$rw3["LNumb"];
 					}
@@ -159,16 +156,16 @@
 				$no=5;
 			
 			$squer="SELECT * FROM issue WHERE iState=2;";
-			$resl=mysql_query($squer);
-			while ($r=mysql_fetch_array($resl)){
+			$resl=mysqli_query($mysqli,$squer);
+			while ($r=mysqli_fetch_array($resl)){
 				$q2="SELECT * FROM books WHERE BID=".$r['BID']." LIMIT 1;";
-				$res2=mysql_query($q2);
-				while ($rw2=mysql_fetch_array($res2)){
+				$res2=mysqli_query($mysqli,$q2);
+				while ($rw2=mysqli_fetch_array($res2)){
 					
 				}
 				
-				$sql = mysql_query("SELECT * FROM books WHERE BID=".$r['BID']." LIMIT 1");
-				while($data = mysql_fetch_assoc($sql)){
+				$sql = mysqli_query($mysqli,"SELECT * FROM books WHERE BID=".$r['BID']." LIMIT 1");
+				while($data = mysqli_fetch_assoc($sql)){
 					$objPHPExcel->setActiveSheetIndex(0)
 						->setCellValue('A'.$no, " ".$data['bAccNo'])
 						->setCellValue('B'.$no, $data['bTitle'])
@@ -218,20 +215,20 @@
 				$no=5;
 			
 			$squer="SELECT * FROM issue WHERE (iTimeS+INTERVAL iDuration DAY)<CURDATE();";
-			$resl=mysql_query($squer);
-			while ($r=mysql_fetch_array($resl)){
+			$resl=mysqli_query($mysqli,$squer);
+			while ($r=mysqli_fetch_array($resl)){
 				$q2="SELECT * FROM books WHERE BID=".$r['BID']." LIMIT 1;";
-				$res2=mysql_query($q2);
-				while ($rw2=mysql_fetch_array($res2)){
+				$res2=mysqli_query($mysqli,$q2);
+				while ($rw2=mysqli_fetch_array($res2)){
 					
 				}
 				
-				$sql = mysql_query("SELECT * FROM books WHERE BID=".$r['BID']." LIMIT 1");
-				while($data = mysql_fetch_assoc($sql)){
+				$sql = mysqli_query($mysqli,"SELECT * FROM books WHERE BID=".$r['BID']." LIMIT 1");
+				while($data = mysqli_fetch_assoc($sql)){
 					$luname=$lunumb='';
 					$q3="SELECT * FROM libcusts WHERE LID=".$r['SID']." LIMIT 1;";
-					$res3=mysql_query($q3);
-					while ($rw3=mysql_fetch_array($res3)){
+					$res3=mysqli_query($mysqli,$q3);
+					while ($rw3=mysqli_fetch_array($res3)){
 						$luname=ucwords(strtolower($rw3["LName"]));
 						$lunumb=$rw3["LNumb"];
 					}
@@ -284,16 +281,16 @@
 				$no=5;
 			
 			$squer="SELECT * FROM issue WHERE iState=3;";
-			$resl=mysql_query($squer);
-			while ($r=mysql_fetch_array($resl)){
+			$resl=mysqli_query($mysqli,$squer);
+			while ($r=mysqli_fetch_array($resl)){
 				$q2="SELECT * FROM books WHERE BID=".$r['BID']." LIMIT 1;";
-				$res2=mysql_query($q2);
-				while ($rw2=mysql_fetch_array($res2)){
+				$res2=mysqli_query($mysqli,$q2);
+				while ($rw2=mysqli_fetch_array($res2)){
 					
 				}
 				
-				$sql = mysql_query("SELECT * FROM books WHERE BID=".$r['BID']." LIMIT 1");
-				while($data = mysql_fetch_assoc($sql)){
+				$sql = mysqli_query($mysqli,"SELECT * FROM books WHERE BID=".$r['BID']." LIMIT 1");
+				while($data = mysqli_fetch_assoc($sql)){
 					$objPHPExcel->setActiveSheetIndex(0)
 						->setCellValue('A'.$no, " ".$data['bAccNo'])
 						->setCellValue('B'.$no, $data['bTitle'])
@@ -328,7 +325,7 @@
 		
 		ob_end_clean();
 		
-		// Redirect output to a client’s web browser (Excel2007)
+		// Redirect output to a clientï¿½s web browser (Excel2007)
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 		header('Content-Disposition: attachment;filename="Books Records.xlsx"');
 		header('Cache-Control: max-age=0');
