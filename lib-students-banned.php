@@ -14,7 +14,7 @@
 	$ui->printNavbar();
 	
 	//check if the user is logged in
-	if (!$user->verify()){
+	if (!$user->login_check($mysqli)){
 		//if the user is not logged in,
 		//set current page name, just to make sure that we'll stick to this page even after loging in :)
 		$curr_page=basename(__FILE__,".php");
@@ -40,9 +40,9 @@
 				//check number of students entities available
 				$quer="SELECT COUNT(LID) FROM libcusts WHERE lType='staff' AND LBan=1;";
 			}
-			$res=mysql_query($quer);
+			$res=mysqli_query($mysqli,$quer);
 			if ($res){					//if the query is successful
-				while ($row=mysql_fetch_array($res)){
+				while ($row=mysqli_fetch_array($res)){
 					if ($row[0]==0){	//no students found
 						?>
 						<ul class="nav nav-tabs">
@@ -69,7 +69,7 @@
 							$squer="SELECT * FROM libcusts WHERE lType='student' AND LBan=1;";
 						else
 							$squer="SELECT * FROM libcusts WHERE lType='staff' AND LBan=1;";
-						$resl=mysql_query($squer);
+						$resl=mysqli_query($mysqli,$squer);
 						?>
 						
 						<!----************* export modal**************---->
@@ -152,7 +152,7 @@
 								</thead>
 								<tbody>
 								<?php
-								while ($r=mysql_fetch_array($resl)){
+								while ($r=mysqli_fetch_array($resl)){
 									?>
 									
 									<!--books modal-->
@@ -222,7 +222,7 @@
 								</thead>
 								<tbody>
 								<?php
-								while ($r=mysql_fetch_array($resl)){
+								while ($r=mysqli_fetch_array($resl)){
 									?>
 									
 									<!--books modal-->
@@ -274,7 +274,7 @@
 				}
 			}
 			else{
-				?><p class="text-danger"><strong>MySQL error:</strong> <?php echo mysql_error(); ?></p><?php
+				?><p class="text-danger"><strong>MySQLI error:</strong> <?php echo mysqli_error($mysqli); ?></p><?php
 			}
 			?>
 			<hr>

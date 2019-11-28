@@ -14,7 +14,7 @@
 	$ui->printNavbar();
 	
 	//check if the user is logged in
-	if (!$user->verify()){
+	if (!$user->login_check($mysqli)){
 		//if the user is not logged in,
 		//set current page name, just to make sure that we'll stick to this page even after loging in :)
 		$curr_page=basename(__FILE__,".php");
@@ -40,13 +40,10 @@
 		//$uid=$validate->decrypt($_GET['user'],WA_SALT);
 		$uid=substr($_GET['id'],2,strlen($_GET['id']));
 		
-		//connect to db
-		dbconnect();
-		
 		//check if the UID exists in 'users'
 		$q="SELECT COUNT(LID) AS numrows FROM libcusts WHERE LID=$uid;";
-		$res=mysql_query($q) or die ("Query failed checking 'lid' on 'libcusts'");
-		$rw=mysql_fetch_array($res,MYSQL_ASSOC);
+		$res=mysqli_query($mysqli,$q) or die ("Query failed checking 'lid' on 'libcusts'");
+		$rw=mysqli_fetch_array($res,MYSQLI_ASSOC);
 		if ($rw==0){
 			$notif->setInfo("The requested profile could not be found on the database.","warning");
 			header('location: ./err/?code=404');
@@ -118,8 +115,8 @@
 			<div class="row">
 				<?php
 				$sqlf="SELECT * FROM libcusts WHERE LID=$uid LIMIT 1;";
-				$resultf=mysql_query($sqlf);
-				while($r=mysql_fetch_array($resultf)){
+				$resultf=mysqli_query($mysqli,$sqlf);
+				while($r=mysqli_fetch_array($resultf)){
 					?>
 					<div class="col-sm-12">
 						<h3 class="text-success" style="margin-top:0;"><span class="glyphicon glyphicon-user"></span> <?php echo ucwords(strtolower(trim($r['LName']))); ?>, <?php echo $r['LNumb']; ?> (<?php echo ucwords($r['LType']); ?>)</h3>
@@ -151,10 +148,9 @@
 						<p class="text-info">These are the books selected to be issued.</p>
 						<div class="list-group">
 							<?php
-							//dbconnect();
 							for ($i=1;$i<=$cntr;$i++){
-								$sql_res=mysql_query("SELECT * FROM books WHERE BID=".$_SESSION["BORROW_".$_GET['id']."_B$i"].";");
-								while($row=mysql_fetch_array($sql_res)){
+								$sql_res=mysqli_query($mysqli,"SELECT * FROM books WHERE BID=".$_SESSION["BORROW_".$_GET['id']."_B$i"].";");
+								while($row=mysqli_fetch_array($sql_res)){
 									?>
 									<li class="list-group-item">
 										<span class="glyphicon glyphicon-book"></span> <?php echo $row['bAccNo']; ?> <?php echo $row['bTitle']; ?> by <?php echo $row['bAuthor']; ?> (<?php echo $row['bCartegory']; ?>)</i>

@@ -41,22 +41,21 @@
 						
 						if ($x==$sheet['numRows']){
 							if (isset($_GET["staff"]))
-								$sql.="('$cellYear','".mysql_real_escape_string($cellName)."','$cellNo',0,'staff');";
+								$sql.="('$cellYear','".mysqli_real_escape_string($mysqli, $cellName)."','$cellNo',0,'staff');";
 							else
-								$sql.="('$cellYear','".mysql_real_escape_string($cellName)."','$cellNo',0,'student');";
+								$sql.="('$cellYear','".mysqli_real_escape_string($mysqli, $cellName)."','$cellNo',0,'student');";
 						}
 						else{
 							if (isset($_GET["staff"]))
-								$sql.="('$cellYear','".mysql_real_escape_string($cellName)."','$cellNo',0,'staff'),";
+								$sql.="('$cellYear','".mysqli_real_escape_string($mysqli, $cellName)."','$cellNo',0,'staff'),";
 							else
-								$sql.="('$cellYear','".mysql_real_escape_string($cellName)."','$cellNo',0,'student'),";
+								$sql.="('$cellYear','".mysqli_real_escape_string($mysqli, $cellName)."','$cellNo',0,'student'),";
 						}
 						$x++;
 					}
 						
 					//echo $sql;
-					dbconnect();
-					$result=mysql_query($sql);
+					$result=mysqli_query($mysqli, $sql);
 					if ($result){
 						if (isset($_GET["staff"]))
 							ulog($_SESSION["CURR_USER_ID"],"Successfully imported staff records to the system...");	//log this activity

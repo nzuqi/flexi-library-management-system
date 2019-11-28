@@ -14,7 +14,7 @@
 	$ui->printNavbar();
 	
 	//check if the user is logged in
-	if (!$user->verify()){
+	if (!$user->login_check($mysqli)){
 		//if the user is not logged in,
 		//set current page name, just to make sure that we'll stick to this page even after loging in :)
 		$curr_page=basename(__FILE__,".php");
@@ -40,13 +40,10 @@
 		//$uid=$validate->decrypt($_GET['user'],WA_SALT);
 		$uid=substr($_GET['id'],2,strlen($_GET['id']));
 		
-		//connect to db
-		dbconnect();
-		
 		//check if the UID exists in 'users'
 		$q="SELECT COUNT(LID) AS numrows FROM libcusts WHERE LID=$uid;";
-		$res=mysql_query($q) or die ("Query failed checking 'lid' on 'libcusts'");
-		$rw=mysql_fetch_array($res,MYSQL_ASSOC);
+		$res=mysqli_query($mysqli,$q) or die ("Query failed checking 'lid' on 'libcusts'");
+		$rw=mysqli_fetch_array($res,MYSQLI_ASSOC);
 		if ($rw==0){
 			$notif->setInfo("The requested profile could not be found on the database.","warning");
 			header('location: ./err/?code=404');
@@ -65,8 +62,8 @@
 				<?php
 				$owe=$stats->countOverdueBooksUserCharges($uid);
 				$sqlf="SELECT * FROM libcusts WHERE LID=$uid LIMIT 1;";
-				$resultf=mysql_query($sqlf);
-				while($r0=mysql_fetch_array($resultf)){
+				$resultf=mysqli_query($mysqli,$sqlf);
+				while($r0=mysqli_fetch_array($resultf)){
 					?>
 					<div class="col-sm-12">
 						<h3 class="text-success" style="margin-top:0;"><span class="glyphicon glyphicon-user"></span> <?php echo ucwords(strtolower(trim($r0['LName']))); ?>, <?php echo $r0['LNumb']; ?> (<?php echo ucwords($r0['LType']); ?>)</h3>
@@ -79,22 +76,22 @@
 						?>
 						<a href="./lib-home-check?id=FL<?php echo $uid; ?>" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-chevron-left"></i> Go Back</a>
 						<?php
-						$res=mysql_query("SELECT COUNT(IID) FROM issue WHERE SID=$uid AND (iState=0 OR iState=2);");
-						while($r=mysql_fetch_array($res)){
+						$res=mysqli_query($mysqli,"SELECT COUNT(IID) FROM issue WHERE SID=$uid AND (iState=0 OR iState=2);");
+						while($r=mysqli_fetch_array($res)){
 							$cnt=$r[0];
 						}
 						if ($cnt>0){
-							$sql_res=mysql_query("SELECT * FROM issue WHERE SID=$uid AND (iState=0 OR iState=2);");
+							$sql_res=mysqli_query($mysqli,"SELECT * FROM issue WHERE SID=$uid AND (iState=0 OR iState=2);");
 							?>
 							<!-- &nbsp; <a href="#" class="btn btn-warning btn-sm"><i class="glyphicon glyphicon-export"></i> Export Records</a>-->
 							<p><?php echo ucwords(strtolower(trim($r0['LName']))); ?> has <strong><?php echo $cnt; ?></strong> book(s) waiting to be cleared.</p>
 							<p class="text-info"><i class="glyphicon glyphicon-info-sign"></i> Click on any book entity for more options.</p>
 							<div class="list-group">
 							<?php
-							while($row=mysql_fetch_array($sql_res)){
+							while($row=mysqli_fetch_array($sql_res)){
 								$q2="SELECT * FROM books WHERE BID=".$row['BID']." LIMIT 1;";
-								$res2=mysql_query($q2);
-								while ($rw2=mysql_fetch_array($res2)){
+								$res2=mysqli_query($mysqli,$q2);
+								while ($rw2=mysqli_fetch_array($res2)){
 									?>
 									
 									<!--books modal-->

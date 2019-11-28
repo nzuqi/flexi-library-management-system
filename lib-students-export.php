@@ -5,13 +5,11 @@
 	if ($_SERVER["REQUEST_METHOD"]=="POST"){
 		$dtype="";
 		$dtype=$_POST["dtype"];
-		
-		dbconnect();
-		
+
 		if ($dtype=='staff')
-			$sql = mysql_query("SELECT * FROM libcusts WHERE LType='staff' ORDER BY LName ASC");
+			$sql = mysqli_query($mysqli, "SELECT * FROM libcusts WHERE LType='staff' ORDER BY LName ASC");
 		else
-			$sql = mysql_query("SELECT * FROM libcusts WHERE LType='student' ORDER BY LName ASC");
+			$sql = mysqli_query($mysqli, "SELECT * FROM libcusts WHERE LType='student' ORDER BY LName ASC");
 		$n = 1;
 		
 		// Create new PHPExcel object
@@ -43,7 +41,7 @@
 						->setCellValue('B4', 'NUMBER')
 						->setCellValue('C4', 'NAME');
 				$no=5;
-			while($data = mysql_fetch_assoc($sql)){
+			while($data = mysqli_fetch_assoc($mysqli, $sql)){
 				$objPHPExcel->setActiveSheetIndex(0)
 					->setCellValue('A'.$no, $n)
 					->setCellValue('B'.$no, $data['LNumb'])
@@ -69,7 +67,7 @@
 						->setCellValue('C4', 'NAME')
 						->setCellValue('D4', 'CLASS');
 				$no=5;
-			while($data = mysql_fetch_assoc($sql)){
+			while($data = mysqli_fetch_assoc($mysqli, $sql)){
 				$objPHPExcel->setActiveSheetIndex(0)
 					->setCellValue('A'.$no, $n)
 					->setCellValue('B'.$no, $data['LNumb'])
@@ -97,7 +95,7 @@
 		
 		ob_end_clean();
 		
-		// Redirect output to a client’s web browser (Excel2007)
+		// Redirect output to a clientï¿½s web browser (Excel2007)
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 		header('Content-Disposition: attachment;filename="'.ucwords(strtolower($dtype)).' Records.xlsx"');
 		header('Cache-Control: max-age=0');

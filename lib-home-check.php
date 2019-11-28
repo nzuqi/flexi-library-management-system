@@ -14,7 +14,7 @@
 	$ui->printNavbar();
 	
 	//check if the user is logged in
-	if (!$user->verify()){
+	if (!$user->login_check($mysqli)){
 		//if the user is not logged in,
 		//set current page name, just to make sure that we'll stick to this page even after loging in :)
 		$curr_page=basename(__FILE__,".php");
@@ -40,13 +40,10 @@
 		//$uid=$validate->decrypt($_GET['user'],WA_SALT);
 		$uid=substr($_GET['id'],2,strlen($_GET['id']));
 		
-		//connect to db
-		dbconnect();
-		
 		//check if the UID exists in 'users'
 		$q="SELECT COUNT(LID) AS numrows FROM libcusts WHERE LID=$uid;";
-		$res=mysql_query($q) or die ("Query failed checking 'lid' on 'libcusts'");
-		$rw=mysql_fetch_array($res,MYSQL_ASSOC);
+		$res=mysqli_query($mysqli,$q) or die ("Query failed checking 'lid' on 'libcusts'");
+		$rw=mysqli_fetch_array($res,MYSQLI_ASSOC);
 		if ($rw==0){
 			$notif->setInfo("The requested profile could not be found on the database.","warning");
 			header('location: ./err/?code=404');
@@ -65,8 +62,8 @@
 				<?php
 				$owe=$stats->countOverdueBooksUserCharges($uid);
 				$sqlf="SELECT * FROM libcusts WHERE LID=$uid LIMIT 1;";
-				$resultf=mysql_query($sqlf);
-				while($r=mysql_fetch_array($resultf)){
+				$resultf=mysqli_query($mysqli,$sqlf);
+				while($r=mysqli_fetch_array($resultf)){
 					if($r['LBan']==1){
 						?>
 						<div class="col-sm-12">
@@ -111,18 +108,18 @@
 					<h4 class="text-danger"><span class='label label-danger'><span class="glyphicon glyphicon-share"></span> Most Borrowed book(s)</span></h4>
 					<?php
 					$q="SELECT COUNT(IID) AS numrows FROM issue WHERE SID=$uid;";
-					$res=mysql_query($q) or die ("Query failed counting issued books...");
-					$rw=mysql_fetch_array($res,MYSQL_ASSOC);
+					$res=mysqli_query($mysqli,$q) or die ("Query failed counting issued books...");
+					$rw=mysqli_fetch_array($res,MYSQLI_ASSOC);
 					if($rw['numrows']>0){
 						?>
 						<p>
 						<?php
 						$q1="SELECT BID FROM issue WHERE MONTH(iTimeS)= MONTH(CURDATE()) AND SID=$uid GROUP BY BID ORDER BY COUNT(*) DESC LIMIT 3;";
-						$res1=mysql_query($q1);
-						while ($rw1=mysql_fetch_array($res1)){
+						$res1=mysqli_query($mysqli,$q1);
+						while ($rw1=mysqli_fetch_array($res1)){
 							$q2="SELECT * FROM books WHERE BID=".$rw1[0]." LIMIT 1;";
-							$res2=mysql_query($q2);
-							while ($rw2=mysql_fetch_array($res2)){
+							$res2=mysqli_query($mysqli,$q2);
+							while ($rw2=mysqli_fetch_array($res2)){
 								?><span class="glyphicon glyphicon-book"></span> <strong><?php echo $rw2['bTitle']; ?></strong> by <em><?php echo $rw2['bAuthor']; ?></em><br/><?php
 							}
 						}
@@ -162,15 +159,15 @@
 					<h4 class="text-danger"><span class='label label-danger'><span class="glyphicon glyphicon-transfer"></span> Recent Activity</span></h4>
 					<?php
 					$q="SELECT COUNT(UID) AS numrows FROM activity WHERE SID=$uid;";
-					$res=mysql_query($q) or die ("Query failed counting activities...");
-					$rw=mysql_fetch_array($res,MYSQL_ASSOC);
+					$res=mysqli_query($mysqli,$q) or die ("Query failed counting activities...");
+					$rw=mysqli_fetch_array($res,MYSQLI_ASSOC);
 					if($rw['numrows']>0){
 						?>
 						<p>
 						<?php
 						$q1="SELECT * FROM activity WHERE MONTH(UTimeS)= MONTH(CURDATE()) AND SID=$uid ORDER BY UTimeS DESC LIMIT 10;";
-						$res1=mysql_query($q1);
-						while ($rw1=mysql_fetch_array($res1)){
+						$res1=mysqli_query($mysqli,$q1);
+						while ($rw1=mysqli_fetch_array($res1)){
 							?><span class="glyphicon glyphicon-time"></span> <strong><?php echo date('D, j M y, h:i a ',strtotime($rw1['UTimeS'])); ?></strong>, activity &raquo; <em><?php echo $rw1['UActivity']; ?></em><br/><?php
 						}
 						?>
@@ -191,7 +188,7 @@
 				<div class="col-sm-4">
 					<h3><span class="glyphicon glyphicon-stats"></span> Overall Books Stats</h3>
 					<p class="text-info"><em><span class="glyphicon glyphicon-info-sign"></span> Hover on a pie section for details.</em></p>
-					<canvas id="books-pie" width="230" height="230" />
+					<canvas id="books-pie" width="230" height="230">
 					<p>&nbsp;</p>
 				</div>
 			</div>
@@ -232,7 +229,6 @@
         highlight: "#616774",
         label: "Paid Books"
     }];
-	
 	window.onload = function() {
         var ctx = document.getElementById("books-pie").getContext("2d");
         window.myPie = new Chart(ctx).Pie(pieData);

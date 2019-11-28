@@ -14,7 +14,7 @@
 	$ui->printNavbar();
 	
 	//check if the user is logged in
-	if (!$user->verify()){
+	if (!$user->login_check($mysqli)){
 		//if the user is not logged in,
 		//set current page name, just to make sure that we'll stick to this page even after loging in :)
 		$curr_page=basename(__FILE__,".php");
@@ -88,14 +88,12 @@
 				$ltype='staff';
 				
 			if ($err==""){
-				dbconnect();
-				
 				if(!isset($_GET['staff']))
-					$sql="INSERT INTO libcusts(LAYear,LName,LNumb,LBan,LType,LForm,LStream) VALUES('$lyear','".ucwords(strtolower(mysql_real_escape_string($lname)))."','$lno','0','$ltype',$lform,'".ucwords(strtolower(mysql_real_escape_string($lstream)))."');";
+					$sql="INSERT INTO libcusts(LAYear,LName,LNumb,LBan,LType,LForm,LStream) VALUES('$lyear','".ucwords(strtolower(mysqli_real_escape_string($mysqli,$lname)))."','$lno','0','$ltype',$lform,'".ucwords(strtolower(mysqli_real_escape_string($mysqli,$lstream)))."');";
 				else
-					$sql="INSERT INTO libcusts(LAYear,LName,LNumb,LBan,LType) VALUES('$lyear','".ucwords(strtolower(mysql_real_escape_string($lname)))."','$lno','0','$ltype');";
+					$sql="INSERT INTO libcusts(LAYear,LName,LNumb,LBan,LType) VALUES('$lyear','".ucwords(strtolower(mysqli_real_escape_string($mysqli,$lname)))."','$lno','0','$ltype');";
 				
-				$result=mysql_query($sql);
+				$result=mysqli_query($mysqli,$sql);
 				if ($result){
 					ulog($_SESSION["CURR_USER_ID"],"Successfully added 1 $ltype record to the system...");	//log this activity
 					$notif->setInfo("The $ltype '".ucwords(strtolower($lname))."' was successfully saved.","success");

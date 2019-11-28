@@ -8,7 +8,7 @@
 	//allow/deny lib user access
 	function libcustsAction($id,$a){
 		$sql2="UPDATE libcusts SET LBan=$a WHERE LID=$id LIMIT 1;";
-		$result2=mysql_query($sql2);
+		$result2=mysqli_query($mysqli,$sql2);
 		if ($result2)
 			return true;
 		else
@@ -16,7 +16,6 @@
 	}
 	
 	if(isset($_GET["action"]) && isset($_GET["id"])){
-		dbconnect();
 		if($_GET["action"]=="allow"){
 			if(libcustsAction($_GET["id"],0)){
 				$notif->setInfo("Successfully allowed library access to the library user.","success");

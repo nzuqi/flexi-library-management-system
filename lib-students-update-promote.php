@@ -7,7 +7,7 @@
 	//promote students
 	function promoteStuds(){
 		$sql2="UPDATE libcusts SET LForm=LForm+1 WHERE LForm<>4;";
-		$result2=mysql_query($sql2);
+		$result2=mysqli_query($mysqli, $sql2);
 		if ($result2)
 			return true;
 		else
@@ -15,7 +15,6 @@
 	}
 	
 	if ($_SERVER["REQUEST_METHOD"]=="POST"){
-		dbconnect();
 		$ptype=$_POST['ptype'];
 		if($ptype=='promote'){
 			if(promoteStuds()){

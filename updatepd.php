@@ -18,7 +18,7 @@
 	$ui->printNavbar();
 	
 	//check if the user is logged in
-	if (!$user->verify()){
+	if (!$user->login_check($mysqli)){
 		//if the user is not logged in,
 		//set current page name, just to make sure that we'll stick to this page even after loging in :)
 		$curr_page=basename(__FILE__,".php");
@@ -73,9 +73,8 @@
 					}
 					//if there are no errors, time to update our 'users' table
 					if ($err==""){
-						dbconnect();
 						$sql="UPDATE users SET uEmail='".$uemail."' WHERE UID=".$_SESSION['CURR_USER_ID']." LIMIT 1;";
-						$result=mysql_query($sql);
+						$result=mysqli_query($mysqli,$sql);
 						if ($result){
 							$notif->setInfo("Your details have been successfully updated.","success");
 						}
@@ -161,9 +160,8 @@
 					
 					//if there are no errors, time to update our 'users' table
 					if ($err==""){
-						dbconnect();
 						$sql="UPDATE users SET uTitle='$utitle',uName='$uname',uDesignation='$udesig',uEmail='$uemail',uPhone='$uphone',uUsername='$uusername' WHERE UID=".$_SESSION['CURR_USER_ID']." LIMIT 1;";
-						$result=mysql_query($sql);
+						$result=mysqli_query($mysqli,$sql);
 						if ($result){
 							$notif->setInfo("Your details have been successfully updated.", "success");
 							$stats->setStat($_SESSION['CURR_USER_ID'],'profileu');
@@ -176,10 +174,9 @@
 			}
 			//if not, load values from the db...
 			else{
-				dbconnect();
 				$sql22="SELECT * FROM users WHERE UID=".$_SESSION["CURR_USER_ID"]." LIMIT 1;";
-				$result22=mysql_query($sql22);
-				while ($row22=mysql_fetch_array($result22)){
+				$result22=mysqli_query($mysqli,$sql22);
+				while ($row22=mysqli_fetch_array($result22)){
 					$utitle=$row22['uTitle'];
 					$uname=$row22['uName'];
 					$udesig=$row22['uDesignation'];
@@ -301,9 +298,8 @@
 				}
 				
 				if ($err==""){
-					dbconnect();
 					$sql="UPDATE users SET uPassword='".sha1(md5($confirm))."' WHERE UID=".$_SESSION['CURR_USER_ID']." LIMIT 1;";
-					$result=mysql_query($sql);
+					$result=mysqli_query($mysqli,$sql);
 					if ($result){
 						//setInfo("Your password was changed successfully");
 						$stats->setStat($_SESSION['CURR_USER_ID'],'profileu');

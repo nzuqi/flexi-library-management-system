@@ -85,8 +85,6 @@
 	$pdf->SetFont('CalibriL','',12);
 	$pdf->Cell(0,5,'LIBRARY BARCODES FOR NEW BOOKS',0,2,'C');
 	
-	
-	
 	$pdf->Image('./files/barcodes/bc1.gif',35,60);
 	$pdf->Image('./files/barcodes/bc2.gif',120,60);
 	

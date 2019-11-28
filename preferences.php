@@ -147,29 +147,22 @@
 		<h3 class="text-warning" style="margin-top:0;"><span class="glyphicon glyphicon-book"></span> Library Preferences</h3>
 		<?php
 		if ($user->login_check($mysqli)){
-			if($_SESSION["CURR_SUB_SYSTEM"]=="library"){
-				?>
-				<p class="text-danger"><i class="glyphicon glyphicon-wrench"></i> Update <?php echo WA_TITLE; ?>'s library settings.</p>
-				<form role="form" action="preferences?library" method="POST">
-					<div class="form-group">
-						<label for="mbooks">Maximum Books Issued <span class="text-danger">*</span></label>
-						<p class="text-info"><i class="glyphicon glyphicon-info-sign"></i> This is the maximum number of books to be issued to a single user. If the target is hit, the user has to return the books in possession first before any issuing.</p>
-						<input type="text" name="mbooks" id="mbooks" class="form-control" value="<?php echo $max_books; ?>" placeholder="Maximum Books Issued e.g. 5" />
-					</div>
-					<div class="form-group">
-						<label for="ocharge">Overdue Books Charges Rate (Ksh) <span class="text-danger">*</span></label>
-						<p class="text-info"><i class="glyphicon glyphicon-info-sign"></i> This is the amount charged on overdue books each day.</p>
-						<input type="text" name="ocharge" id="ocharge" class="form-control" value="<?php echo $ocharge; ?>" placeholder="Overdue Charges e.g. 5" />
-					</div>
-					<button type="submit" class="btn btn-success btn-lg"><i class="glyphicon glyphicon-floppy-disk"></i> Save Preferences</button>
-				</form>
-				<?php
-			}
-			else{
-				?>
-				<p class="text-danger"><i class="glyphicon glyphicon-wrench"></i> Log in to the library sub-system to update <?php echo WA_TITLE; ?>'s library settings.</p>
-				<?php
-			}
+			?>
+			<p class="text-danger"><i class="glyphicon glyphicon-wrench"></i> Update <?php echo WA_TITLE; ?>'s library settings.</p>
+			<form role="form" action="preferences?library" method="POST">
+				<div class="form-group">
+					<label for="mbooks">Maximum Books Issued <span class="text-danger">*</span></label>
+					<p class="text-info"><i class="glyphicon glyphicon-info-sign"></i> This is the maximum number of books to be issued to a single user. If the target is hit, the user has to return the books in possession first before any issuing.</p>
+					<input type="text" name="mbooks" id="mbooks" class="form-control" value="<?php echo $max_books; ?>" placeholder="Maximum Books Issued e.g. 5" />
+				</div>
+				<div class="form-group">
+					<label for="ocharge">Overdue Books Charges Rate (Ksh) <span class="text-danger">*</span></label>
+					<p class="text-info"><i class="glyphicon glyphicon-info-sign"></i> This is the amount charged on overdue books each day.</p>
+					<input type="text" name="ocharge" id="ocharge" class="form-control" value="<?php echo $ocharge; ?>" placeholder="Overdue Charges e.g. 5" />
+				</div>
+				<button type="submit" class="btn btn-success btn-lg"><i class="glyphicon glyphicon-floppy-disk"></i> Save Preferences</button>
+			</form>
+			<?php
 		}
 		else{
 			?>

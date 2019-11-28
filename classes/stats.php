@@ -134,6 +134,7 @@
 		//count user returned books
 		public function userBooksReturned($uid){
 			$c=0;
+			$con=mysqli_connect(HOST, USER, PASSWORD, DATABASE) or die(DB_CON_ERR);
 			$q1="SELECT COUNT(IID) AS numrows FROM issue WHERE iState=1 AND SID=$uid;";
 			$res1=mysqli_query($con,$q1);
 			$rw1=mysqli_fetch_array($res1,MYSQLI_ASSOC);

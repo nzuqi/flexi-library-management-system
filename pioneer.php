@@ -218,7 +218,7 @@
 	if (CreateTableLibCusts()==true && CreateTableUsers()==true && CreateTableNotifications()==true && CreateTableBooks()==true && CreateTableIssue()==true && CreateTableLogs()==true && CreateTableActivity()==true){
 		echo "Tables created successfully...<br/><br/>";
 		echo "<em>You will be redirected in 5 seconds.</em><br/><br/>";
-		echo "<strong><a href='http://martin.co.ke' target='_blank'>www.martin.co.ke</a></strong>";
+		echo "<strong><a href='https://martin.co.ke' target='_blank'>www.martin.co.ke</a></strong>";
 		header('refresh: 5; url=./lib-home');
 		//exit();
 	}

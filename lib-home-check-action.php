@@ -7,8 +7,9 @@
 	
 	//insert to db to issue
 	function issueBooks($sid,$bid,$dur){
+		$mysqli=mysqli_connect(HOST, USER, PASSWORD, DATABASE) or die(DB_CON_ERR);
 		$sql2="INSERT INTO issue(SID,BID,iDuration,iState) VALUES($sid,$bid,$dur,0);";
-		$result2=mysql_query($sql2);
+		$result2=mysqli_query($mysqli,$sql2);
 		if ($result2)
 			return true;
 		else
@@ -17,8 +18,9 @@
 	
 	//flag book as lost
 	function lostBook($iid){
+		$mysqli=mysqli_connect(HOST, USER, PASSWORD, DATABASE) or die(DB_CON_ERR);
 		$sql2="UPDATE issue SET iState=2 WHERE IID=$iid;";
-		$result2=mysql_query($sql2);
+		$result2=mysqli_query($mysqli,$sql2);
 		if ($result2)
 			return true;
 		else
@@ -27,8 +29,9 @@
 	
 	//flag book as compensated
 	function compensateBook($iid){
+		$mysqli=mysqli_connect(HOST, USER, PASSWORD, DATABASE) or die(DB_CON_ERR);
 		$sql2="UPDATE issue SET iState=3 WHERE IID=$iid;";
-		$result2=mysql_query($sql2);
+		$result2=mysqli_query($mysqli,$sql2);
 		if ($result2)
 			return true;
 		else
@@ -37,8 +40,9 @@
 	
 	//flag book as returned
 	function returnBook($iid){
+		$mysqli=mysqli_connect(HOST, USER, PASSWORD, DATABASE) or die(DB_CON_ERR);
 		$sql2="UPDATE issue SET iState=1 WHERE IID=$iid;";
-		$result2=mysql_query($sql2);
+		$result2=mysqli_query($mysqli,$sql2);
 		if ($result2)
 			return true;
 		else
@@ -47,8 +51,9 @@
 	
 	//flag book as returned and overdue charges paid
 	function ocreturnBook($iid,$oc){
+		$mysqli=mysqli_connect(HOST, USER, PASSWORD, DATABASE) or die(DB_CON_ERR);
 		$sql2="UPDATE issue SET iState=4,iOCharge=$oc WHERE IID=$iid;";
-		$result2=mysql_query($sql2);
+		$result2=mysqli_query($mysqli,$sql2);
 		if ($result2)
 			return true;
 		else
@@ -57,12 +62,10 @@
 	
 	if(isset($_GET["activity"]) && isset($_GET["id"])){
 		
-		dbconnect();
-		
 		if($_GET["activity"]=="read"){
 			//update activity
 			if($user->updateActivity($_GET["id"],"read")){
-				$notif->setInfo(mysql_error()."Successfully checked in the library for reading.","success");
+				$notif->setInfo(mysqli_error($mysqli)."Successfully checked in the library for reading.","success");
 				ulog($_SESSION["CURR_USER_ID"],"Checked in a person for 'reading' successfully...");	//log this activity
 			}
 			else{
@@ -161,8 +164,6 @@
 		}
 		
 		if($err==""){
-		
-			dbconnect();
 			
 			$cnt=$s=0;
 			for ($x=1;$x<=$max_issue;$x++){
@@ -178,7 +179,7 @@
 			//update activity
 			$user->updateActivity($uid,"borrow");
 			if ($cnt==$s){
-				$notif->setInfo($cnt.mysql_error()." book(s) were successfully recorded as issued. Go to the 'View Issued Books' section for more details.","success");
+				$notif->setInfo($cnt.mysqli_error($mysqli)." book(s) were successfully recorded as issued. Go to the 'View Issued Books' section for more details.","success");
 				ulog($_SESSION["CURR_USER_ID"],"Issued $cnt books successfully...");	//log this activity
 				header("location: ./lib-home");
 			}

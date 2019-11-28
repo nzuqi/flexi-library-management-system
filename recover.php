@@ -59,11 +59,9 @@
 		}
 		
 		if ($uerr==""){
-			dbconnect();
-			
 			$q="SELECT COUNT(*) AS numrows FROM users WHERE uIDNumber='$uidno' AND uSecQ='$usecq' AND uSecA='$useca';";
-			$res=mysql_query($q) or die ("Query failed validating user details...");
-			$rw=mysql_fetch_array($res,MYSQL_ASSOC);
+			$res=mysqli_query($mysqli,$q) or die ("Query failed validating user details...");
+			$rw=mysqli_fetch_array($res,MYSQLI_ASSOC);
 			if($rw['numrows']==0)
 				$notif->setInfo("The details you provided are incorrect! Provide the correct details and try again.","danger");
 			else{
@@ -71,7 +69,7 @@
 				$nwpass=sha1(md5($rpass));
 				//reset password
 				$sql="UPDATE users SET uPassword='".$nwpass."' WHERE uIDNumber='".$uidno."' LIMIT 1;";
-				$result=mysql_query($sql);
+				$result=mysqli_query($mysqli,$sql);
 				$to=$user->getUID($uidno);
 				if ($result){
 					ulog($to,"Recovered password successfully...");	//log this activity

@@ -122,8 +122,8 @@
 										<li<?php if($this->active_menu==2.5) echo ' class="active"'; ?>><a href="lib-books-view?cart=overdue"><i class="glyphicon glyphicon-time"></i> View Overdue Books</a></li>
 										<li<?php if($this->active_menu==2.6) echo ' class="active"'; ?>><a href="lib-books-view?cart=lost"><i class="glyphicon glyphicon-remove-circle"></i> View Lost Books</a></li>
 										<li<?php if($this->active_menu==2.7) echo ' class="active"'; ?>><a href="lib-books-view?cart=compensate"><i class="glyphicon glyphicon-refresh"></i> View Compensated Books</a></li>
-										<li role="separator" class="divider"></li>
-										<li<?php if($this->active_menu==2.8) echo ' class="active"'; ?>><a href="lib-barcode-generator"><i class="glyphicon glyphicon-barcode"></i> Generate Barcodes</a></li>
+										<!-- <li role="separator" class="divider"></li> -->
+										<!-- <li<?php if($this->active_menu==2.8) echo ' class="active"'; ?>><a href="lib-barcode-generator"><i class="glyphicon glyphicon-barcode"></i> Generate Barcodes</a></li> -->
 									</ul>
 								</li>
 								<li class="dropdown<?php if($this->active_menu>=3.1 && $this->active_menu<4) echo ' active'; ?>">
@@ -186,9 +186,9 @@
 				}
 				?>
 				<p class="small text-info"><strong>Version <?php echo WA_VERSION; ?></strong>, revised on <strong><?php echo WA_REVISION; ?></strong></p>
-				<p class="small text-warning">The source code and the GUI (Graphic User Interface) are the original works of <strong><?php echo D_NAME; ?></strong>.</p>
-				<p class="small">Visit <a href="http://martin.co.ke/" target="_blank">www.martin.co.ke</a> for more web apps and snippets.</p>
-				<p class="text-danger">&copy; <?php echo date('Y'); ?> <?php echo D_NAME; ?></p>
+				<!-- <p class="small text-warning">The source code and the GUI (Graphic User Interface) are the original works of <strong><?php echo D_NAME; ?></strong>.</p> -->
+				<p class="small">Developed by <a href="https://martin.co.ke/" target="_blank">Martin Nzuki</a></p>
+				<p class="small text-danger">&copy; <?php echo date('Y'); ?> Flexi Library Management System<?php //echo D_NAME; ?></p>
 				<p>&nbsp;</p>
 			</footer>
 			<?php

@@ -144,10 +144,10 @@
 							$q1="SELECT BID FROM issue WHERE MONTH(iTimeS)=".$_GET['month']." GROUP BY BID ORDER BY COUNT(*) DESC LIMIT 5;";
 						else
 							$q1="SELECT BID FROM issue WHERE MONTH(iTimeS)=MONTH(CURDATE()) GROUP BY BID ORDER BY COUNT(*) DESC LIMIT 5;";
-						$res1=mysqli_query($q1);
-						while ($rw1=mysql_fetch_array($res1)){
+						$res1=mysqli_query($mysqli,$q1);
+						while ($rw1=mysqli_fetch_array($res1)){
 							$q2="SELECT * FROM books WHERE BID=".$rw1[0]." LIMIT 1;";
-							$res2=mysql_query($mysqli,$q2);
+							$res2=mysqli_query($mysqli,$q2);
 							while ($rw2=mysqli_fetch_array($res2)){
 								?><span class="glyphicon glyphicon-book"></span> <strong><?php echo $rw2['bTitle']; ?></strong> by <em><?php echo $rw2['bAuthor']; ?></em><br/><?php
 							}

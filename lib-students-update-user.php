@@ -14,7 +14,7 @@
 	$ui->printNavbar();
 	
 	//check if the user is logged in
-	if (!$user->verify()){
+	if (!$user->login_check($mysqli)){
 		//if the user is not logged in,
 		//set current page name, just to make sure that we'll stick to this page even after loging in :)
 		$curr_page=basename(__FILE__,".php");
@@ -30,10 +30,8 @@
 			exit();
 		}
 		
-		dbconnect();
-		
-		$quer=mysql_query("SELECT * FROM libcusts WHERE LID=".trim($_GET["id"]).";");
-		$res=mysql_num_rows($quer);
+		$quer=mysqli_query($mysqli, "SELECT * FROM libcusts WHERE LID=".trim($_GET["id"]).";");
+		$res=mysqli_num_rows($quer);
 		if ($res==0){
 			$notif->setInfo("The ".$_GET["type"]." record does not exist in the system.",'danger');
 			header('location: ./lib-students-update');
@@ -101,13 +99,11 @@
 			}
 				
 			if ($err==""){
-				dbconnect();
-				
 				if($_GET["type"]=='student')
-					$sql="UPDATE libcusts SET LAYear='$lyear',LName='".ucwords(strtolower(mysql_real_escape_string($lname)))."',LNumb='$lno',LType='$ltype',LForm=$lform,LStream='".ucwords(strtolower(mysql_real_escape_string($lstream)))."' WHERE LID=".trim($_GET["id"]).";";
+					$sql="UPDATE libcusts SET LAYear='$lyear',LName='".ucwords(strtolower(mysqli_real_escape_string($mysqli, $lname)))."',LNumb='$lno',LType='$ltype',LForm=$lform,LStream='".ucwords(strtolower(mysqli_real_escape_string($mysqli, $lstream)))."' WHERE LID=".trim($_GET["id"]).";";
 				else
-					$sql="UPDATE libcusts SET LAYear='$lyear',LName='".ucwords(strtolower(mysql_real_escape_string($lname)))."',LNumb='$lno',LType='$ltype' WHERE LID=".trim($_GET["id"]).";";
-				$result=mysql_query($sql);
+					$sql="UPDATE libcusts SET LAYear='$lyear',LName='".ucwords(strtolower(mysqli_real_escape_string($mysqli, $lname)))."',LNumb='$lno',LType='$ltype' WHERE LID=".trim($_GET["id"]).";";
+				$result=mysqli_query($mysqli, $sql);
 				if ($result){
 					ulog($_SESSION["CURR_USER_ID"],"Successfully updated 1 $ltype record in the system...");	//log this activity
 					$notif->setInfo("The $ltype '".ucwords(strtolower($lname))."' record was successfully updated.","success");
@@ -125,9 +121,9 @@
 		}
 		else{
 			$sql2="SELECT * FROM libcusts WHERE LID=".trim($_GET["id"])." LIMIT 1;";
-			$result2=mysql_query($sql2);
+			$result2=mysqli_query($mysqli, $sql2);
 			if ($result2){
-				while ($row2=mysql_fetch_array($result2)){
+				while ($row2=mysqli_fetch_array($result2)){
 					$ltype=$row2['LType'];$lno=$row2['LNumb'];$lname=$row2['LName'];$lyear=$row2['LAYear'];$lform=$row2['LForm'];$lstream=$row2['LStream'];
 				}
 			}
