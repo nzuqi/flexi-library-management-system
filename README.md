@@ -10,7 +10,7 @@ A PHP Library Management System
 2. Import the database from `flexi.sql`.
 3. Modify the `conn.php` file with your database connection details.
 4. Run on your browser.
-5. When asked for a **key**, pick one from the set below:
+5. When asked for a **key**, use:
     
     `8AA9-EA1A-43C9-4613`
 
