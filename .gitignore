@@ -1,3 +1,5 @@
 .htaccess
-#files/barcodes/*
-#err/flexi.ini
+files/barcodes/*
+err/flexi.ini
+err/err.nzk
+flexi.ini
