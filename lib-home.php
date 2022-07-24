@@ -95,10 +95,10 @@
 						<?php
 						$q1="SELECT BID FROM issue WHERE MONTH(iTimeS)= MONTH(CURDATE()) GROUP BY BID ORDER BY COUNT(*) DESC LIMIT 5;";
 						$res1=mysqli_query($mysqli,$q1);
-						while ($rw1=mysqli_fetch_array($res1)){
+						while ($rw1=mysqli_fetch_array($res1,MYSQLI_ASSOC)){
 							$q2="SELECT * FROM books WHERE BID=".$rw1[0]." LIMIT 1;";
 							$res2=mysqli_query($mysqli,$q2);
-							while ($rw2=mysqli_fetch_array($res2)){
+							while ($rw2=mysqli_fetch_array($res2,MYSQLI_ASSOC)){
 								?><span class="glyphicon glyphicon-book"></span> <strong><?php echo $rw2['bTitle']; ?></strong> by <em><?php echo $rw2['bAuthor']; ?></em><br/><?php
 							}
 						}
@@ -146,12 +146,12 @@
 						?>
 						<p>
 						<?php
-						$q1="SELECT SID,UActivity FROM activity WHERE MONTH(uTimeS)= MONTH(CURDATE()) GROUP BY SID ORDER BY COUNT(*) DESC LIMIT 7;";
-						$res1=mysqli_query($mysqli,$q1);
-						while ($rw1=mysqli_fetch_array($res1)){
+						$q1="SELECT SID,UActivity FROM activity WHERE MONTH(uTimeS)= MONTH(CURDATE()) GROUP BY SID,UActivity ORDER BY COUNT(*) DESC LIMIT 7;";
+						$res1=mysqli_query($mysqli,$q1) or die ("Query failed fetching user activities...");
+						while ($rw1=mysqli_fetch_array($res1,MYSQLI_ASSOC)){
 							$q2="SELECT * FROM libcusts WHERE LID=".$rw1[0]." AND LType='student' LIMIT 1;";
 							$res2=mysqli_query($mysqli,$q2);
-							while ($rw2=mysqli_fetch_array($res2)){
+							while ($rw2=mysqli_fetch_array($res2,MYSQLI_ASSOC)){
 								?><span class="glyphicon glyphicon-user"></span> <?php echo ucwords(strtolower($rw2['LName'])); ?>, <em><?php echo $rw2['LNumb']; ?></em><br/><?php
 							}
 						}
